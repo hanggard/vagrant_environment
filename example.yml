@@ -6,6 +6,8 @@
   sudo: true
   
   tasks:
+    
+
     - name: install mc
       yum: name=mc state=present
 
@@ -24,3 +26,16 @@
     - name: copy key node 2
       copy: src=/vagrant/.vagrant/machines/node2/virtualbox/private_key dest=/home/vagrant/node2/ owner=vagrant group=vagrant mode=600
       when: (key2_stat.stat.exists and inventory_hostname in groups['controllers'])
+      
+    - name: add node1 into local ansible inventory
+      shell: 'head -2 /vagrant/inventory | tail -n 1 >> /etc/ansible/hosts'
+      when: inventory_hostname in groups['controllers']
+      
+    - name: Install libselinux-python
+      yum: name=libselinux-python state=present
+
+    - name: Selinux disable
+      selinux: state=disabled
+      
+    - name: Restart server
+      shell: reboot
