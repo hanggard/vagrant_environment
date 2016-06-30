@@ -38,7 +38,7 @@
       selinux: state=disabled
       
     - name: set host names
-      hostname: name={{ inventory_hostname }}{{ ansible_ssh_host }}
+      hostname: name={{ inventory_hostname }}
       
 #    - name: Restart server
 #      shell: reboot
